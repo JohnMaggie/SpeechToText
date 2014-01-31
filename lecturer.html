@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>NUIG project</title>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel=
+    "stylesheet">
+	
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+
+body{
+background-image:url('http://static.myopera.com/community/graphics/speeddials/Opera-Background-Simple.jpg');
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position:center;
+width:auto;
+} 
+
+.header{
+position:absolute;
+top:0px;
+left:0px;
+width:100%;
+height:10%;
+border: 1px solid #0000;
+border-top-style:none;
+border-right-style:none;
+border-left-style:none;
+border-bottom-style:solid;
+background-color:#ebf5ff;
+}
+
+.ppt{
+position:absolute;
+top:12%;
+left: 13%;
+width:35%;
+height:60%;
+border: 1px solid #0000;
+border-style:solid;
+padding: 5px;
+background-color: #ebf5ff;
+border-radius: 8px;
+}
+
+.vid{
+position:absolute;
+top:12%;
+right: 13%;
+width:35%;
+height:60%;
+border: 1px solid #0000;
+border-style:solid;
+padding: 5px;
+background-color: #ebf5ff;
+border-radius: 8px;
+}
+
+.float{
+position:absolute;
+top:74%;
+left:10%;
+width:80%;
+height:14%;
+padding:20px; 
+background-color: #ebf5ff; 
+margin-top: 20px; 
+border-radius: 8px; 
+display:none;
+}
+.float h2 {margin: 0 0 10px 0;}
+
+.sttBox{
+position:absolute;
+width: 100%;
+top:3%;
+left:75%;
+height:200px;
+}
+
+.start{
+position:absolute;
+top: 76%;
+left: 2%;
+width: 20%;
+height:20%;
+border: 1px solid #0000;
+border-style:solid;
+padding: 5px;
+background-color: #ebf5ff;
+border-radius: 8px;
+}
+
+.button {
+position:absolute;
+top: 2px;
+right: 2px;
+}
+
+  .final {
+    color: black;
+    padding-right: 3px; 
+  }
+  .interim {
+    color: gray;
+  }
+ #results {
+	position:absolute;
+	top:76%;
+	left:25%;
+	width:70%;
+	min-height:20%;
+	border-radius: 8px; 
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+    text-align: left;
+	background-color: #ebf5ff;
+	border: 1px solid #0000;
+	border-style:solid;
+  }
+  
+
+
+
+
+  article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+output { padding: 5px 10px; width: 100%  }
+  input { padding: 5px 10px; width: 20%  }
+  body {font-family:"Trebuchet MS", Helvetica, sans-serif; padding: 30px;}		
+  
+  	
+</style>
+<style id="jsbin-css"></style></head>
+<body>
+
+<div class = "header">
+<h3><center>NUI Galway Speech Recognition Project</center></h3>
+</div>
+
+<div class = "ppt">
+<iframe width="100%" height="100%" src="http://www.youtube.com/embed/kmgpGYcshlY?list=PLs9WDxB7iCXDTDQ2cL1NzXozpyHiG_frN" frameborder="0" ></iframe>
+<!--<h2>Powerpoint of Lecture here</h2>-->
+</div>
+
+<div class="vid">
+<!--<h2>Video of lecturer here</h2>-->
+<video id="monitor" width="100%" height="100%" autoplay></video>
+</div>
+
+<div id="results">
+ <span id="final_span" class="final"></span>
+  <span id="interim_span" class="interim"></span>
+  <p>
+</div>
+
+
+<div class="start">
+  <div id="div_language">
+    <select id="select_language" onchange="updateCountry()"></select>
+    &nbsp;&nbsp;
+    <select id="select_dialect"></select>
+  </div>
+  <div id="info">
+ <p id="info_start">Click on the microphone icon and begin speaking.</p>
+  <p id="info_speak_now">Speak now.</p>
+  <p id="info_no_speech">No speech was detected. You may need to adjust your
+<a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+      microphone settings</a>.</p>
+	  <p id="info_no_microphone" style="display:none">
+    No microphone was found. Ensure that a microphone is installed and that
+    <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+    microphone settings</a> are configured correctly.</p>
+  <p id="info_allow">Click the "Allow" button above to enable your microphone.</p>
+  <p id="info_denied">Permission to use microphone was denied.</p>
+  <p id="info_blocked">Permission to use microphone is blocked. To change,
+    go to chrome://settings/contentExceptions#media-stream</p>
+  <p id="info_upgrade">Web Speech API is not supported by this browser.
+     Upgrade to <a href="//https://www.google.com/intl/en/chrome/browser/canary.html">Chrome</a>
+     version 25 or later.</p>
+</div>
+<!--<div class="button">-->
+<div id="StartButton">
+<button id="start_button" onclick="startButton(event)">
+    <img id="start_img" src="mic.gif" alt="Start"></button>
+</div>
+<!--</div>-->
+</div>
+
+	
+<script src="http://static.jsbin.com/js/render/edit.js"></script>
+<!--<script src="http://static.jsbin.com/js/vendor/eventsource.js"></script>-->
+<script src="http://static.jsbin.com/js/spike.js"></script>
+<script>
+
+function getXMLHttp()
+{
+  var xmlHttp
+
+  try
+  {
+    //Firefox, Opera 8.0+, Safari
+    xmlHttp = new XMLHttpRequest();
+  }
+  catch(e)
+  {
+    //Internet Explorer
+    try
+    {
+      xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch(e)
+    {
+      try
+      {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      catch(e)
+      {
+        alert("Your browser does not support AJAX!")
+        return false;
+      }
+    }
+  }
+  return xmlHttp;
+}
+
+var langs =
+[['Afrikaans',       ['af-ZA']],
+ ['Bahasa Indonesia',['id-ID']],
+ ['Bahasa Melayu',   ['ms-MY']],
+ ['Català',          ['ca-ES']],
+ ['Ceština',         ['cs-CZ']],
+ ['Deutsch',         ['de-DE']],
+ ['English',         ['en-AU', 'Australia'],
+                     ['en-CA', 'Canada'],
+                     ['en-IN', 'India'],
+                     ['en-NZ', 'New Zealand'],
+                     ['en-ZA', 'South Africa'],
+                     ['en-GB', 'United Kingdom'],
+                     ['en-US', 'United States']],
+ ['Español',         ['es-AR', 'Argentina'],
+                     ['es-BO', 'Bolivia'],
+                     ['es-CL', 'Chile'],
+                     ['es-CO', 'Colombia'],
+                     ['es-CR', 'Costa Rica'],
+                     ['es-EC', 'Ecuador'],
+                     ['es-SV', 'El Salvador'],
+                     ['es-ES', 'España'],
+                     ['es-US', 'Estados Unidos'],
+                     ['es-GT', 'Guatemala'],
+                     ['es-HN', 'Honduras'],
+                     ['es-MX', 'México'],
+                     ['es-NI', 'Nicaragua'],
+                     ['es-PA', 'Panamá'],
+                     ['es-PY', 'Paraguay'],
+                     ['es-PE', 'Perú'],
+                     ['es-PR', 'Puerto Rico'],
+                     ['es-DO', 'República Dominicana'],
+                     ['es-UY', 'Uruguay'],
+                     ['es-VE', 'Venezuela']],
+ ['Euskara',         ['eu-ES']],
+ ['Français',        ['fr-FR']],
+ ['Galego',          ['gl-ES']],
+ ['Hrvatski',        ['hr_HR']],
+ ['IsiZulu',         ['zu-ZA']],
+ ['Íslenska',        ['is-IS']],
+ ['Italiano',        ['it-IT', 'Italia'],
+                     ['it-CH', 'Svizzera']],
+ ['Magyar',          ['hu-HU']],
+ ['Nederlands',      ['nl-NL']],
+ ['Norsk bokmål',    ['nb-NO']],
+ ['Polski',          ['pl-PL']],
+ ['Português',       ['pt-BR', 'Brasil'],
+                     ['pt-PT', 'Portugal']],
+ ['Româna',          ['ro-RO']],
+ ['Slovencina',      ['sk-SK']],
+ ['Suomi',           ['fi-FI']],
+ ['Svenska',         ['sv-SE']],
+ ['Türkçe',          ['tr-TR']],
+ ['?????????',       ['bg-BG']],
+ ['P??????',         ['ru-RU']],
+ ['??????',          ['sr-RS']],
+ ['???',            ['ko-KR']],
+ ['??',             ['cmn-Hans-CN', '??? (????)'],
+                     ['cmn-Hans-HK', '??? (??)'],
+                     ['cmn-Hant-TW', '?? (??)'],
+                     ['yue-Hant-HK', '?? (??)']],
+ ['???',           ['ja-JP']],
+ ['Lingua latina',   ['la']]];
+
+for (var i = 0; i < langs.length; i++) {
+  select_language.options[i] = new Option(langs[i][0], i);
+}
+select_language.selectedIndex = 6; //default selection :English
+updateCountry();
+select_dialect.selectedIndex = 5; //default selection : UK
+showInfo('info_start');
+
+//Changes Language selection
+function updateCountry() {
+  for (var i = select_dialect.options.length - 1; i >= 0; i--) {
+    select_dialect.remove(i);
+  }
+  var list = langs[select_language.selectedIndex];
+  for (var i = 1; i < list.length; i++) {
+    select_dialect.options.add(new Option(list[i][1], list[i][0]));
+  }
+  select_dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
+}
+
+//Variables
+var final_transcript = '';
+var recognizing = false;
+var ignore_onend;
+
+//Check if browser will support
+if (!('webkitSpeechRecognition' in window)) {
+  upgrade();
+} else {
+//Recognition
+ start_button.style.display = 'inline-block';
+  var recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+recognition.onstart = function() {
+	console.log("started speech recognition");
+    recognizing = true;
+    showInfo('info_speak_now');
+	start_img.src = 'mic-animate.gif';
+  };
+  
+  //Incase of Error
+  recognition.onerror = function(event) {
+    if (event.error == 'no-speech') {
+	console.log("error=no-speech");
+      start_img.src = 'mic.gif';
+      showInfo('info_no_speech');
+      ignore_onend = true;
+    }
+    if (event.error == 'audio-capture') {
+	console.log("error=audio-capture");
+      start_img.src = 'mic.gif';
+      showInfo('info_no_microphone');
+      //ignore_onend = true;
+	  startButton();
+	  }
+	};  
+  
+  //On end of recognition
+ 
+  recognition.onend = function() {
+  console.log("on end has been ran");
+    recognizing = false;
+    if (ignore_onend) {
+      return;
+    }
+   start_img.src = 'mic.gif';
+    if (!final_transcript) {
+      showInfo('info_start');
+      return;
+    }
+	final_span.innerHTML += interim_span.innerHTML; //used to save interm result on end
+	interim_span.innerHTML = '';
+	//Displays info from recognition
+    showInfo('');
+    if (window.getSelection) {
+      window.getSelection().removeAllRanges();
+      var range = document.createRange();
+      range.selectNode(document.getElementById('final_span'));
+      window.getSelection().addRange(range);
+	  startButton();
+    }
+};
+  
+ //When Results from recognition are recieved
+    recognition.onresult = function(event) {
+	console.log("on result has been ran");
+    var interim_transcript = '';
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript;
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+      }
+    }
+    final_transcript = capitalize(final_transcript);
+    final_span.innerHTML = linebreak(final_transcript);
+    interim_span.innerHTML = linebreak(interim_transcript);
+	
+	//Send to server
+	var xmlHttp = getXMLHttp();
+	//timer = setInterval(
+		//function () {
+	xmlHttp.open("GET", "ajax.php?info="+final_transcript, true); 
+	xmlHttp.send();
+	//}, 50);
+	
+    if (final_transcript || interim_transcript) {
+      showButtons('inline-block');
+    }
+  };
+ } 
+ 
+ //If upgrade in browser is needed
+ function upgrade() {
+  start_button.style.visibility = 'hidden';
+  showInfo('info_upgrade');
+}
+
+//Adds punctuation to recognised text
+var two_line = /\n\n/g;
+var one_line = /\n/g;
+function linebreak(s) {
+  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+}
+
+var first_char = /\S/;
+function capitalize(s) {
+  return s.replace(first_char, function(m) { return m.toUpperCase(); });
+}
+
+//When start button is clicked speech recognition begins
+function startButton(event) {
+console.log("Start button has been pressed");
+  if (recognizing) {
+  console.log("start button has stopped this");
+    recognition.stop();
+    return;
+  }
+//  final_transcript = '';
+  recognition.lang = select_dialect.value;
+  recognition.start();
+  ignore_onend = false;
+  /*final_span.innerHTML = '';
+  interim_span.innerHTML = '';*/
+  start_img.src = 'mic-slash.gif';
+  showInfo('info_allow');
+  showButtons('none');
+}
+
+//Puts info into HTML
+function showInfo(s) {
+  if (s) {
+    for (var child = info.firstChild; child; child = child.nextSibling) {
+      if (child.style) {
+        child.style.display = child.id == s ? 'inline' : 'none';
+      }
+    }
+    info.style.visibility = 'visible';
+  } else {
+    info.style.visibility = 'hidden';
+  }
+}
+
+//Used to show and hide buttons
+var current_style;
+function showButtons(style) {
+  if (style == current_style) {
+    return;
+  }
+  current_style = style;
+ /* copy_button.style.display = style;
+  email_button.style.display = style;
+  copy_info.style.display = 'none';
+  email_info.style.display = 'none';*/
+}
+
+
+//For Video
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-1656750-13']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+    })();
+
+    function addElement(said) {
+        var ni = document.getElementById('myDiv');
+        var numi = document.getElementById('theValue');
+        var num = (document.getElementById('theValue').value - 1) + 2;
+        numi.value = num;
+        var newdiv = document.createElement('tt');
+        var divIdName = 'my' + num + 'Div';
+        newdiv.setAttribute('id', divIdName);
+        newdiv.innerHTML = said + " ";
+        ni.appendChild(newdiv);
+    }
+    //a video tag
+    var video = document.getElementById('monitor');
+
+    //request it
+    navigator.webkitGetUserMedia({ video: true }, gotStream, noStream);
+
+    function gotStream(stream) {
+
+        video.src = webkitURL.createObjectURL(stream);
+        video.onerror = function () {
+            stream.stop();
+            streamError();
+        };
+    }
+
+    function noStream() {
+        document.getElementById('errorMessage').textContent = 'No camera available.';
+    }
+
+
+    function streamError() {
+        document.getElementById('errorMessage').textContent = 'Camera error.';
+    }
+	
+	//Testing Canvas
+	/*var canvas = document.getElementById('MyCanvas');
+	var context = canvas.getContext('2d');
+	
+		timer = setInterval(
+		function () {
+		    context.drawImage(video, 0, 0, 320, 240);
+			var dataURL = canvas.toDataURL();
+			//send img to server
+			$.ajax({
+  type: "POST",
+  url: "script.php",
+  data: { 
+     imgBase64: dataURL
+  }
+}).done(function(o) {
+  console.log('saved');
+});
+			
+			//var data = canvas.toDataURL('image/jpeg', 1.0);
+            }, 50);*/
+</script>
+
+</body>
+</html>
