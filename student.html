@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>NUIG project</title>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel=
+    "stylesheet">
+	
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+
+body{
+background-image:url('http://static.myopera.com/community/graphics/speeddials/Opera-Background-Simple.jpg');
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position:center;
+width:auto;
+} 
+
+.header{
+position:absolute;
+top:0px;
+left:0px;
+width:100%;
+height:10%;
+border: 1px solid #0000;
+border-top-style:none;
+border-right-style:none;
+border-left-style:none;
+border-bottom-style:solid;
+background-color:#ebf5ff;
+}
+
+.ppt{
+position:absolute;
+top:12%;
+left: 13%;
+width:35%;
+height:60%;
+border: 1px solid #0000;
+border-style:solid;
+padding: 5px;
+background-color: #ebf5ff;
+border-radius: 8px;
+}
+
+.vid{
+position:absolute;
+top:12%;
+right: 13%;
+width:35%;
+height:60%;
+border: 1px solid #0000;
+border-style:solid;
+padding: 5px;
+background-color: #ebf5ff;
+border-radius: 8px;
+}
+
+.float{
+position:absolute;
+top:74%;
+left:10%;
+width:80%;
+height:14%;
+padding:20px; 
+background-color: #ebf5ff; 
+margin-top: 20px; 
+border-radius: 8px; 
+display:none;
+}
+.float h2 {margin: 0 0 10px 0;}
+
+.sttBox{
+position:absolute;
+width: 100%;
+top:3%;
+left:75%;
+height:200px;
+}
+
+.start{
+position:absolute;
+top: 76%;
+left: 2%;
+width: 20%;
+height:20%;
+border: 1px solid #0000;
+border-style:solid;
+padding: 5px;
+background-color: #ebf5ff;
+border-radius: 8px;
+}
+
+.button {
+position:absolute;
+top: 2px;
+right: 2px;
+}
+
+  .final {
+    color: black;
+    padding-right: 3px; 
+  }
+  .interim {
+    color: gray;
+  }
+ #results {
+	position:absolute;
+	top:76%;
+	left:5%;
+	width:90%;
+	min-height:20%;
+	border-radius: 8px; 
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+    text-align: left;
+	background-color: #ebf5ff;
+	border: 1px solid #0000;
+	border-style:solid;
+  }
+  
+
+
+
+
+  article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+output { padding: 5px 10px; width: 100%  }
+  input { padding: 5px 10px; width: 20%  }
+  body {font-family:"Trebuchet MS", Helvetica, sans-serif; padding: 30px;}		
+  
+  	
+</style>
+<style id="jsbin-css"></style></head>
+<body>
+
+<div class = "header">
+<h3><center>NUI Galway Speech Recognition Project</center></h3>
+</div>
+
+<div class = "ppt">
+<iframe width="100%" height="100%" src="http://www.youtube.com/embed/kmgpGYcshlY?list=PLs9WDxB7iCXDTDQ2cL1NzXozpyHiG_frN" frameborder="0" ></iframe>
+<!--<h2>Powerpoint of Lecture here</h2>-->
+</div>
+
+<div class="vid">
+<!--<h2>Video of lecturer here</h2>-->
+<center>
+</br>
+</br>
+</br>
+<canvas id="MyCanvas" width="320" height="240" style="display: inline;"></canvas>
+</br>
+</br>
+<!--<input type='button' onclick='MakeRequest("Stu");' value='Start'/>-->
+</center>
+</div>
+
+<div id="results">
+<center>
+<input type='button' onclick='MakeSpeechRequest("Stu"); MakeRequest("Stu"); PrintToScreen();' value='Start'/>
+</center>
+ <div id='ResponseDiv'>
+       </div>
+ <span id="final_span" class="final"></span>
+  <span id="interim_span" class="interim"></span>
+  <p>
+</div>
+
+
+
+
+	
+<script src="http://static.jsbin.com/js/render/edit.js"></script>
+<!--<script src="http://static.jsbin.com/js/vendor/eventsource.js"></script>-->
+<script src="http://static.jsbin.com/js/spike.js"></script>
+<script>
+var myimg = new Array();
+function getXMLHttp()
+{
+  var xmlHttp
+
+  try
+  {
+    //Firefox, Opera 8.0+, Safari
+    xmlHttp = new XMLHttpRequest();
+  }
+  catch(e)
+  {
+    //Internet Explorer
+    try
+    {
+      xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch(e)
+    {
+      try
+      {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      catch(e)
+      {
+        alert("Your browser does not support AJAX!")
+        return false;
+      }
+    }
+  }
+  return xmlHttp;
+}
+
+
+
+
+function MakeSpeechRequest(str)
+{
+  var xmlHttp = getXMLHttp();
+
+  xmlHttp.onreadystatechange = function()
+  {
+    if(xmlHttp.readyState == 4)
+    {
+      HandleResponse(xmlHttp.responseText);
+    }
+  }
+timer = setInterval(function () {
+  xmlHttp.open("GET", "ajax.php?p="+str, true); 
+  xmlHttp.send();
+  }, 250);
+}
+
+
+function HandleResponse(response)
+{
+  document.getElementById('ResponseDiv').innerHTML = response;
+}
+
+var canvas = document.getElementById('MyCanvas');
+	var ctx = canvas.getContext('2d');
+
+function MakeRequest(str)
+{
+  var xmlHttp2 = getXMLHttp();
+
+  xmlHttp2.onreadystatechange = function()
+  {
+    if(xmlHttp2.readyState == 4)
+    {
+      Handleimage(xmlHttp2.responseText);
+    }
+  }
+timer = setInterval(function () {
+  xmlHttp2.open("GET", "test_post.php?p="+str, true); 
+  xmlHttp2.send();
+  }, 150);
+}
+
+var i =0;
+function Handleimage(response)
+{
+myimg[i]=response;
+ console.log("made it to the Handleimage function");
+
+	  //var image = new Image();
+		//image.src = response;
+		//image.onload = function() {
+    //ctx.drawImage(image, 0, 0);
+	i=i+1;
+}
+
+function PrintToScreen(){
+timer = setInterval(function () {
+ if (i>10){
+ for (var x =0;x<10;x++){
+  var image = new Image();
+		image.src = myimg[x];
+		image.onload = function() {
+    ctx.drawImage(image, 0, 0);
+ }
+ }
+ i=0;
+ }
+  }, 100);
+
+}
+</script>
+
+</body>
+</html>
