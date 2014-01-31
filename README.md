@@ -24,6 +24,8 @@ Similarily the video stream is taken in using getusermedia, converted to a base6
 
 This will allow users of hearing difficulties to get the most out of lectures and speeches, giving them the video for lip reading and gestures as well as the speech to text to get the speech word for word. The google hangout is also used to screen capture from the lecturers laptop to transmit the lecturers slides to teh student so the student has everything on their screen. 
 
+In the future I plan to use wbRTC as well as a node JS server to transmit the video and text over teh network, this would be much faster and work better than the current implementation 
+
 If any  other details are needed please contact me 
 John Maguire
 0876246259
